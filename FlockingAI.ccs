@@ -1,0 +1,22 @@
+<Solution>
+  <PropertyGroup Name="FlockingAI" Version="2.3.2.3" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Project Name="MainScene.csd" Type="Scene" />
+        <Image Name="HelloWorld.png" />
+        <Project Name="death.csd" Type="Node" />
+        <PlistImageFolder Image="death.png" PListFile="death.plist" Name=".death_PList.Dir">
+          <PlistImageFile Name="death_attack_1.png" Key="death_attack_1.png" />
+          <PlistImageFile Name="death_attack_2.png" Key="death_attack_2.png" />
+          <PlistImageFile Name="death_attack_3.png" Key="death_attack_3.png" />
+          <PlistImageFile Name="death_attack_4.png" Key="death_attack_4.png" />
+          <PlistImageFile Name="death_attack_5.png" Key="death_attack_5.png" />
+          <PlistImageFile Name="death_walk1.png" Key="death_walk1.png" />
+          <PlistImageFile Name="death_walk2.png" Key="death_walk2.png" />
+          <PlistImageFile Name="death_walk3.png" Key="death_walk3.png" />
+        </PlistImageFolder>
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
