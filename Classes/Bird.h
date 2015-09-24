@@ -54,9 +54,6 @@ private:
     ViewCheck _viewCheck;
     std::vector<Vec2> _points;
     PhysicsBody* _body;
-    Node* _deathNode;
-    ActionTimeline* _animate;
-    
 };
 
 #endif

@@ -159,14 +159,4 @@ void Bird::update(float dt) {
         _viewDraw->drawPoly(viewCirclePoints, 25, true, Color4F(0.5f, 0.f, 0.f, 0.5f));
     }
 #endif
-    
-//    if (_bLeader && _bInterceptor) {
-//        _deathNode->setColor(COLOR_LEADER_INTERCEPTOR);
-//    } else if (_bLeader) {
-//        _deathNode->setColor(COLOR_LEADER);
-//    } else if (_bInterceptor) {
-//        _deathNode->setColor(COLOR_INTERCEPTOR);
-//    } else {
-//        _deathNode->setColor(Color3B::WHITE);
-//    }
 }
