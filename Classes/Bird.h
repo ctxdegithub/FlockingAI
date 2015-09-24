@@ -11,6 +11,7 @@ class Bird : public Node
 {
 public:
 	CREATE_FUNC(Bird);
+    Bird();
 	bool init();
 	void setID(int id);
     
@@ -21,7 +22,13 @@ public:
     void setBackViewFactor(float factor);
     void setFrontViewFactor(float factor);
     
+    bool isLeader() { return _bLeader; }
+    bool isInterceptor() { return _bInterceptor; }
+    void setIsLeader(bool bLeader);
+    void setIsInterceptor(bool bInterceptor);
+    
     int inView(Bird* bird, bool ignoreRadius = true);
+    int inView(Bird *bird, ViewCheck::ViewType type, bool ignoreRadius = true);
     bool isInRange(Bird* bird);
     bool isCloser(Bird* bird);
     
@@ -43,6 +50,8 @@ private:
     
 private:
     int _id;
+    bool _bInterceptor;
+    bool _bLeader;
     ViewCheck _viewCheck;
     std::vector<Vec2> _points;
     PhysicsBody* _body;

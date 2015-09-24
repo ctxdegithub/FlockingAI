@@ -26,9 +26,11 @@ public:
     };
 public:
     int inView(const Vec2& curPos, float dir, const Vec2& targetPos, bool ignoreRadius = false);
+    int inView(ViewType type, const Vec2& curPos, float dir, const Vec2& targetPos, bool ignoreRadius = false);
     bool isInRange(const Vec2& curPos, const Vec2& targetPos);
     bool isCloser(const Vec2& curPos, const Vec2& targetPos);
     void calcViewAngleRange(float& startAngle, float& endAngle);
+    void calcViewAngleRange(ViewType type, float& startAngle, float& endAngle);
     
 private:
     CC_SYNTHESIZE(float, _closerRadius, CloserRadius);

@@ -9,6 +9,10 @@
 #include "ViewCheck.h"
 
 int ViewCheck::inView(const Vec2& curPos, float dir, const Vec2& targetPos, bool ignoreRadius) {
+    return inView(_viewType, curPos, dir, targetPos, ignoreRadius);
+}
+
+int ViewCheck::inView(ViewType type, const Vec2& curPos, float dir, const Vec2& targetPos, bool ignoreRadius) {
     bool inView = false;
     auto d = targetPos - curPos;
     if (!ignoreRadius) {
@@ -18,7 +22,7 @@ int ViewCheck::inView(const Vec2& curPos, float dir, const Vec2& targetPos, bool
     }
     auto w = d.rotateByAngle(Vec2::ZERO, CC_DEGREES_TO_RADIANS(dir + 90));
     
-    switch (_viewType) {
+    switch (type) {
         case ViewType::VIEW_WIDE:
             inView = (w.y > 0) || ((w.y < 0) && fabsf(w.x) > fabsf(w.y) * _backViewFactor);
             break;
@@ -47,18 +51,21 @@ bool ViewCheck::isCloser(const Vec2& curPos, const Vec2& targetPos) {
 }
 
 void ViewCheck::calcViewAngleRange(float& startAngle, float& endAngle) {
-    if (_viewType == ViewCheck::ViewType::VIEW_WIDE) {
+    calcViewAngleRange(_viewType, startAngle, endAngle);
+}
+
+void ViewCheck::calcViewAngleRange(ViewType type, float& startAngle, float& endAngle) {
+    if (type == ViewCheck::ViewType::VIEW_WIDE) {
         auto v = Vec2(_backViewFactor, 1.f);
         float angle = v.getAngle();
         
         startAngle = -angle;
         endAngle = M_PI + angle;
-    } else if (_viewType == ViewCheck::ViewType::VIEW_NARROW) {
+    } else if (type == ViewCheck::ViewType::VIEW_NARROW) {
         auto v = Vec2(_frontViewFactor, 1.f);
         float angle = v.getAngle();
         
         startAngle = angle;
         endAngle = M_PI - angle;
     }
-
 }

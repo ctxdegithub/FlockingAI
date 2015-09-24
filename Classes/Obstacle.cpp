@@ -7,7 +7,7 @@
 //
 
 #ifndef DEBUG_OBSTACLE
-//    #define DEBUG_OBSTACLE
+    #define DEBUG_OBSTACLE
 #endif
 
 #include "Obstacle.h"

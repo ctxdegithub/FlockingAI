@@ -4,6 +4,18 @@
 //    #define DEBUG_BIRD
 #endif
 
+
+const Color3B COLOR_LEADER = Color3B(255, 255, 0);
+const Color3B COLOR_INTERCEPTOR = Color3B(0, 255, 255);
+const Color3B COLOR_LEADER_INTERCEPTOR = Color3B(255, 0, 255);
+
+Bird::Bird() :
+_bLeader(false),
+_bInterceptor(false)
+{
+    
+}
+
 bool Bird::init() {
 	if (!Node::init()) {
 		return false;
@@ -58,6 +70,17 @@ void Bird::setID(int id) {
     _bUpdateUI = true;
 }
 
+void Bird::setIsLeader(bool bLeader) {
+    _bLeader = bLeader;
+    _bUpdateUI = true;
+}
+
+void Bird::setIsInterceptor(bool bInterceptor) {
+    _bInterceptor = bInterceptor;
+    _bUpdateUI = true;
+}
+
+
 void Bird::setViewRadius(float radius) {
     _viewCheck.setViewRadius(radius);
     _bUpdateUI = true;
@@ -94,6 +117,10 @@ int Bird::inView(Bird *bird, bool ignoreRadius) {
     return _viewCheck.inView(getPosition(), getRotation(), bird->getPosition(), ignoreRadius);
 }
 
+int Bird::inView(Bird *bird, ViewCheck::ViewType type, bool ignoreRadius) {
+    return _viewCheck.inView(type, getPosition(), getRotation(), bird->getPosition(), ignoreRadius);
+}
+
 bool Bird::isInRange(Bird *bird) {
     return _viewCheck.isInRange(getPosition(), bird->getPosition());
 }
@@ -115,7 +142,8 @@ void Bird::update(float dt) {
         _label->setString(StringUtils::format("%d", _id));
         
         float startAngle, endAngle;
-        _viewCheck.calcViewAngleRange(startAngle, endAngle);
+        // wide
+        _viewCheck.calcViewAngleRange(ViewCheck::ViewType::VIEW_WIDE, startAngle, endAngle);
         float deltaAngle = (endAngle - startAngle) / 24.f;
         viewCirclePoints[0] = Vec2::ZERO;
         for (int i=0; i<24; ++i) {
@@ -124,6 +152,26 @@ void Bird::update(float dt) {
         }
         _viewDraw->clear();
         _viewDraw->drawPoly(viewCirclePoints, 25, true, Color4F(0.f, 0.5f, 0.f, 0.5f));
+        
+        // narrow
+        _viewCheck.calcViewAngleRange(ViewCheck::ViewType::VIEW_NARROW, startAngle, endAngle);
+        deltaAngle = (endAngle - startAngle) / 24.f;
+        viewCirclePoints[0] = Vec2::ZERO;
+        for (int i=0; i<24; ++i) {
+            viewCirclePoints[i+1].x = cosf(startAngle + deltaAngle * i - M_PI_2) * _viewCheck.getViewRadius();
+            viewCirclePoints[i+1].y = sinf(startAngle + deltaAngle * i - M_PI_2) * _viewCheck.getViewRadius();
+        }
+        _viewDraw->drawPoly(viewCirclePoints, 25, true, Color4F(0.5f, 0.f, 0.f, 0.5f));
     }
 #endif
+    
+    if (_bLeader && _bInterceptor) {
+        _deathNode->setColor(COLOR_LEADER_INTERCEPTOR);
+    } else if (_bLeader) {
+        _deathNode->setColor(COLOR_LEADER);
+    } else if (_bInterceptor) {
+        _deathNode->setColor(COLOR_INTERCEPTOR);
+    } else {
+        _deathNode->setColor(Color3B::WHITE);
+    }
 }
