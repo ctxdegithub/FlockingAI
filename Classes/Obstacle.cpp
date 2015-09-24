@@ -6,11 +6,8 @@
 //
 //
 
-#ifndef DEBUG_OBSTACLE
-    #define DEBUG_OBSTACLE
-#endif
-
 #include "Obstacle.h"
+#include "Defines.h"
 
 bool Obstacle::init() {
     if (!Node::init()) {
@@ -29,7 +26,7 @@ bool Obstacle::init() {
 void Obstacle::initUI() {
     _drawNode = DrawNode::create();
     addChild(_drawNode);
-#ifdef DEBUG_OBSTACLE
+#ifdef AI_DEBUG
     _label = Label::createWithSystemFont("", "Arail", 20);
     _label->setColor(Color3B::BLACK);
     addChild(_label);
@@ -58,7 +55,7 @@ void Obstacle::update(float dt) {
         _drawNode->clear();
         _drawNode->drawDot(Vec2::ZERO, _radius, Color4F::YELLOW);
 
-#ifdef DEBUG_OBSTACLE
+#ifdef AI_DEBUG
         _label->setString(StringUtils::format("%d", _id));
         _drawNode->drawCircle(Vec2::ZERO, _warningRadius, 0, 24, false, Color4F(0.5f, 0.f, 0.f, 0.5f));
 #endif

@@ -36,7 +36,6 @@ public:
     void update(float dt);
     
 private:
-    void initAnimation();
 	void initUI();
 	void initPhysics();
 

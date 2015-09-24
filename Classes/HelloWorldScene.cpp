@@ -4,6 +4,7 @@
 #include "MapManager.h"
 #include "Bird.h"
 #include "Obstacle.h"
+#include "Defines.h"
 
 using namespace cocostudio::timeline;
 

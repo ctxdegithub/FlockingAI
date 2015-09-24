@@ -1,9 +1,5 @@
 #include "Bird.h"
-
-#ifndef DEBUG_BIRD
-//    #define DEBUG_BIRD
-#endif
-
+#include "Defines.h"
 
 const Color3B COLOR_LEADER = Color3B(255, 255, 0);
 const Color3B COLOR_INTERCEPTOR = Color3B(0, 255, 255);
@@ -20,24 +16,16 @@ bool Bird::init() {
 	if (!Node::init()) {
 		return false;
 	}
-    initAnimation();
 	initUI();
 	initPhysics();
 	return true;
 }
 
-void Bird::initAnimation() {
-    _deathNode = CSLoader::createNode("death.csb");
-    addChild(_deathNode);
-    _animate = CSLoader::createTimeline("death.csb");
-    _deathNode->runAction(_animate);
-    _animate->play("walk", true);
-    _deathNode->setScale(0.3f);
-}
-
 void Bird::initUI() {
-#ifdef DEBUG_BIRD
-    _label = Label::createWithSystemFont("", "Arail", 14);
+#ifdef AI_DEBUG
+    _label = Label::createWithSystemFont("", "Arail", 16);
+    _label->setColor(Color3B::BLACK);
+    _label->setPositionX(-10);
     addChild(_label, 10);
     _drawNode = DrawNode::create();
     addChild(_drawNode);
@@ -45,18 +33,13 @@ void Bird::initUI() {
     _viewDraw = DrawNode::create();
     addChild(_viewDraw);
 
-	_points.push_back(Vec2(-8, 3));
-	_points.push_back(Vec2(0, 3));
-	_points.push_back(Vec2(2, 0));
-	_points.push_back(Vec2(0, -3));
-	_points.push_back(Vec2(-8, -3));
-
-	_drawNode->drawPoly(&_points[0], _points.size(), true, Color4F::BLUE);
-	_drawNode->drawLine(Vec2(0, 0), Vec2(20, 0), Color4F::RED);
-
-    _bUpdateUI = true;
+	_points.push_back(Vec2(-15, 6));
+	_points.push_back(Vec2(0, 6));
+	_points.push_back(Vec2(10, 0));
+	_points.push_back(Vec2(0, -6));
+	_points.push_back(Vec2(-15, -6));
 #endif
-
+    _bUpdateUI = true;
 }
 
 void Bird::initPhysics() {
@@ -135,11 +118,23 @@ void Bird::printInfo() {
 }
 
 void Bird::update(float dt) {
-#ifdef DEBUG_BIRD
+#ifdef AI_DEBUG
     if (_bUpdateUI) {
         _bUpdateUI = false;
         // id
         _label->setString(StringUtils::format("%d", _id));
+        
+        // body
+        Color4F clr = Color4F::WHITE;
+        if (_bLeader && _bInterceptor) {
+            clr = Color4F(COLOR_LEADER_INTERCEPTOR);
+        } else if (_bLeader) {
+            clr = Color4F(COLOR_LEADER);
+        } else if (_bInterceptor) {
+            clr = Color4F(COLOR_INTERCEPTOR);
+        }
+        _drawNode->drawPolygon(&_points[0], _points.size(), clr, 1, clr);
+        _drawNode->drawLine(Vec2(0, 0), Vec2(20, 0), Color4F::RED);
         
         float startAngle, endAngle;
         // wide
@@ -165,13 +160,13 @@ void Bird::update(float dt) {
     }
 #endif
     
-    if (_bLeader && _bInterceptor) {
-        _deathNode->setColor(COLOR_LEADER_INTERCEPTOR);
-    } else if (_bLeader) {
-        _deathNode->setColor(COLOR_LEADER);
-    } else if (_bInterceptor) {
-        _deathNode->setColor(COLOR_INTERCEPTOR);
-    } else {
-        _deathNode->setColor(Color3B::WHITE);
-    }
+//    if (_bLeader && _bInterceptor) {
+//        _deathNode->setColor(COLOR_LEADER_INTERCEPTOR);
+//    } else if (_bLeader) {
+//        _deathNode->setColor(COLOR_LEADER);
+//    } else if (_bInterceptor) {
+//        _deathNode->setColor(COLOR_INTERCEPTOR);
+//    } else {
+//        _deathNode->setColor(Color3B::WHITE);
+//    }
 }
